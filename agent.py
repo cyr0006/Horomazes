@@ -9,22 +9,26 @@ client = openai.OpenAI()
 def load_system_prompt():
     with open("system_prompt.txt", "r") as f:
         return f.read()
-
+def load_personal_context():
+    try:
+        with open("prompt/context.md", "r") as f:
+            return f.read()
+    except FileNotFoundError:
+        return ""
 def ask(user_message):
     system = load_system_prompt()
-    context = db.get_context_block()
-    full_message = f"{context}\n\n---\n\n{user_message}"
-    response = client.chat.completions.create(
-        model="gpt-4-0613",
-        messages=[
-            {"role": "system", "content": system},
-            {"role": "user", "content": full_message}
-        ],
-        max_tokens=1000,
-        temperature=0.7,
+    db_context = db.get_context_block()
+    personal_context = load_personal_context()
+    
+    full_message = f"{personal_context}\n\n{db_context}\n\n---\n\n{user_message}"
+    
+    response = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=1024,
+        system=system,
+        messages=[{"role": "user", "content": full_message}]
     )
-    return response.choices[0].message.content.strip()
-
+    return response.content[0].text
 @click.group()
 def cli():
     """Your personal career agent."""
