@@ -23,23 +23,23 @@ load_dotenv()
 client = anthropic.Anthropic()
 
 #Load AI instructions
-def load_system_prompt():
-    with open("prompts/system.md", "r") as f:
+def load_system_prompt(agent):
+    with open(f"prompts/system-{agent}.md", "r") as f:
         return f.read()
     
 #Load context from file for who I am, what I do, and what I want
-def load_personal_context():
+def load_personal_context(agent):
     try:
-        with open("prompts/context.md", "r") as f:
+        with open(f"prompts/context-{agent}.md", "r") as f:
             return f.read()
     except FileNotFoundError:
         return ""
 
 #Main function to ask the agent a question and get a response
-def ask(user_message):
-    system = load_system_prompt()
-    db_context = db.get_context_block()
-    personal_context = load_personal_context()
+def ask(user_message, agent):
+    system = load_system_prompt(agent)
+    db_context = db.get_context_block(agent)
+    personal_context = load_personal_context(agent)
    
     #Context window consists of personal context + database context + user message, separated by --- to help the model understand the structure
     full_message = f"{personal_context}\n\n{db_context}\n\n---\n\n{user_message}"
@@ -71,10 +71,11 @@ def init():
 # No chat history or context query - just a one-off question to the agent, useful for quick queries without needing to start a full conversation
 @cli.command()
 @click.argument("message")
-def query(message):
+@click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
+def query(message, agent):
     """Ask the agent anything."""
     click.echo("\nThinking...\n")
-    response = ask(message)
+    response = ask(message, agent)
     click.echo(response)
 
 # Log an event
@@ -117,16 +118,17 @@ def log_job(company, role):
 
 # Chat with message histroy as context
 @cli.command()
-def chat():
+@click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
+def chat(agent):
     """Start an interactive conversation with the agent."""
-    system = load_system_prompt()
-    db_context = db.get_context_block()
-    personal_context = load_personal_context()
+    system = load_system_prompt(agent)
+    db_context = db.get_context_block(agent)
+    personal_context = load_personal_context(agent)
     
     base_context = f"{personal_context}\n\n{db_context}"
     conversation_history = []
     
-    click.echo("\nCareer Agent ready. Type 'exit' to quit.\n")
+    click.echo(f"\n{agent.capitalize()} Agent ready. Type 'exit' to quit.\n")
     
     while True:
         user_input = input("You: ").strip()
