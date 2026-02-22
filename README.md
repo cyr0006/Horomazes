@@ -39,4 +39,4 @@ Commands:
 Name: Aryan Cyrus
 Ph: 0470311472
 Email: Aryan.m10@yahoo.com
-Website: [text](https://acyrus.netlify.app/)
+Website: [acyrus.netlify.appt](https://acyrus.netlify.app/)
