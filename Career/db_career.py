@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 
-DB_PATH = "data/career.db"
+DB_PATH = "career.db"
 
 # Connect to the database
 def get_conn():

@@ -18,7 +18,7 @@ Commands:
 import anthropic
 import click
 from dotenv import load_dotenv
-import db
+from career import db_career
 load_dotenv()
 client = anthropic.Anthropic()
 
@@ -37,6 +37,7 @@ def load_personal_context(agent):
 
 #Main function to ask the agent a question and get a response
 def ask(user_message, agent):
+    init(agent)
     system = load_system_prompt(agent)
     db_context = db.get_context_block(agent)
     personal_context = load_personal_context(agent)
@@ -63,10 +64,11 @@ def cli():
 
 # bot initialisation and commands
 @cli.command()
-def init():
+@click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
+def init(agent):
     """Initialise the database."""
-    db.init_db()
-    click.echo("Database initialised.")
+    db.init_db(agent)
+    click.echo("Database initialised for agent: " + agent)
 
 # No chat history or context query - just a one-off question to the agent, useful for quick queries without needing to start a full conversation
 @cli.command()
@@ -121,6 +123,7 @@ def log_job(company, role):
 @click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
 def chat(agent):
     """Start an interactive conversation with the agent."""
+    init(agent)
     system = load_system_prompt(agent)
     db_context = db.get_context_block(agent)
     personal_context = load_personal_context(agent)
