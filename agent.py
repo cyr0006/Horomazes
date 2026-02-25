@@ -20,6 +20,8 @@ import click
 from dotenv import load_dotenv
 load_dotenv()
 client = anthropic.Anthropic()
+import base64
+
 
 #database module imports
 from career import db_career
@@ -62,6 +64,28 @@ def load_personal_context(agent):
     except FileNotFoundError:
         return ""
 
+def load_auxiliary_context(agent):
+    if agent == "career":
+        #Example of loading and encoding a resume as auxiliary context for the career agent
+        try:
+            with open("career/resume.pdf", "rb") as f:
+                resume_data = f.read()
+                encoded_resume = base64.b64encode(resume_data).decode("utf-8")
+                return f"## AUXILIARY CONTEXT\n\nResume (base64-encoded): {encoded_resume}"
+        except FileNotFoundError:
+            return ""
+    elif agent == "academia":
+        #Example of loading and encoding a research paper as auxiliary context for the academia agent
+        try:
+            with open("academia/course_map.pdf", "rb") as f:
+                paper_data = f.read()
+                encoded_paper = base64.b64encode(paper_data).decode("utf-8")
+                return f"## AUXILIARY CONTEXT\n\nResearch Paper (base64-encoded): {encoded_paper}"
+        except FileNotFoundError:
+            return ""
+    else:
+        return ""
+
 #Main function to ask the agent a question and get a response
 def ask(user_message, agent):
     init(agent)
@@ -69,9 +93,10 @@ def ask(user_message, agent):
     system = load_system_prompt(agent)
     db_context = db_module.get_context_block(agent)
     personal_context = load_personal_context(agent)
+    auxiliary_context = load_auxiliary_context(agent)
    
     #Context window consists of personal context + database context + user message, separated by --- to help the model understand the structure
-    full_message = f"{personal_context}\n\n{db_context}\n\n---\n\n{user_message}"
+    full_message = f"{personal_context}\n\n{auxiliary_context}\n\n{db_context}\n\n---\n\n{user_message}"
     
     response = client.messages.create(
         model="claude-sonnet-4-6",
@@ -119,8 +144,9 @@ def chat(agent):
     system = load_system_prompt(agent)
     db_context = db_module.get_context_block(agent)
     personal_context = load_personal_context(agent)
+    auxiliary_context = load_auxiliary_context(agent)
     
-    base_context = f"{personal_context}\n\n{db_context}"
+    base_context = f"{personal_context}\n\n{db_context}\n\n{auxiliary_context}"
     conversation_history = []
     
     click.echo(f"\n{agent.capitalize()} Agent ready. Type 'exit' to quit.\n")
