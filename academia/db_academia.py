@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 
-DB_PATH = "career.db"
+DB_PATH = "academia.db"
 
 # Connect to the database
 def get_conn():
@@ -12,38 +12,14 @@ def init_db():
     c = conn.cursor()
 
     c.executescript("""
-        CREATE TABLE IF NOT EXISTS skills (
+        CREATE TABLE IF NOT EXISTS units (
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
-            proficiency TEXT,  -- beginner/intermediate/advanced/expert
-            last_used DATE,
+            enrolment_period TEXT,  -- Sem x YYYY
+            grade TEXT,
             notes TEXT
         );
 
-        CREATE TABLE IF NOT EXISTS career_events (
-            id INTEGER PRIMARY KEY,
-            date DATE NOT NULL,
-            type TEXT,  -- achievement/feedback/project/promotion/other
-            description TEXT NOT NULL,
-            impact TEXT
-        );
-
-        CREATE TABLE IF NOT EXISTS goals (
-            id INTEGER PRIMARY KEY,
-            goal TEXT NOT NULL,
-            target_date DATE,
-            status TEXT DEFAULT 'active',  -- active/achieved/dropped
-            notes TEXT
-        );
-
-        CREATE TABLE IF NOT EXISTS jobs (
-            id INTEGER PRIMARY KEY,
-            company TEXT NOT NULL,
-            role TEXT NOT NULL,
-            date_applied DATE,
-            status TEXT DEFAULT 'applied',  -- applied/screening/interview/offer/rejected/withdrawn
-            notes TEXT
-        );
     """)
     conn.commit()
     conn.close()
@@ -54,56 +30,27 @@ def get_context_block():
     conn = get_conn()
     c = conn.cursor()
 
-    skills = c.execute("SELECT name, proficiency, last_used, notes FROM skills ORDER BY last_used DESC").fetchall()
-    events = c.execute("SELECT date, type, description, impact FROM career_events ORDER BY date DESC LIMIT 10").fetchall()
-    goals = c.execute("SELECT goal, target_date, status, notes FROM goals WHERE status = 'active'").fetchall()
-    jobs = c.execute("SELECT company, role, date_applied, status FROM jobs ORDER BY date_applied DESC LIMIT 10").fetchall()
-    
+    units = c.execute("SELECT name, enrolment_period, grade, notes FROM units ORDER BY enrolment_period DESC").fetchall()    
     conn.close()
 
     context = "## CONTEXT\n\n"
 
-    context += "### Skills\n"
-    context += "\n".join([f"- {s[0]} ({s[1]}) — last used: {s[2]} {f'| {s[3]}' if s[3] else ''}" for s in skills]) or "None logged yet."
-    
-    context += "\n\n### Active Goals\n"
-    context += "\n".join([f"- {g[0]} (target: {g[1]}) {f'| {g[3]}' if g[3] else ''}" for g in goals]) or "None logged yet."
-    
-    context += "\n\n### Recent Career Events\n"
-    context += "\n".join([f"- [{e[0]}] {e[1]}: {e[2]} {f'→ {e[3]}' if e[3] else ''}" for e in events]) or "None logged yet."
-    
-    context += "\n\n### Recent Job Applications\n"
-    context += "\n".join([f"- {j[0]} | {j[1]} | applied: {j[2]} | status: {j[3]}" for j in jobs]) or "None logged yet."
+    context += "### Units\n"
+    context += "\n".join([f"- {u[0]} ({u[1]}) — grade: {u[2]} {f'| {u[3]}' if u[3] else ''}" for u in units]) or "None logged yet."
     
     return context
 
 # --- Helpers --- #
 
 
-def log_skill(name, proficiency, last_used=None, notes=None):
+def log_unit(name, enrolment_period, grade=None, notes=None):
     conn = get_conn()
-    conn.execute("INSERT INTO skills (name, proficiency, last_used, notes) VALUES (?, ?, ?, ?)",
-                 (name, proficiency, last_used or datetime.today().date(), notes))
-    conn.commit()
-    conn.close()
+    c = conn.cursor()
 
-def log_event(description, type="other", impact=None, date=None):
-    conn = get_conn()
-    conn.execute("INSERT INTO career_events (date, type, description, impact) VALUES (?, ?, ?, ?)",
-                 (date or datetime.today().date(), type, description, impact))
-    conn.commit()
-    conn.close()
+    c.execute("""
+        INSERT INTO units (name, enrolment_period, grade, notes)
+        VALUES (?, ?, ?, ?)
+    """, (name, enrolment_period, grade, notes))
 
-def log_goal(goal, target_date=None, notes=None):
-    conn = get_conn()
-    conn.execute("INSERT INTO goals (goal, target_date, notes) VALUES (?, ?, ?)",
-                 (goal, target_date, notes))
-    conn.commit()
-    conn.close()
-
-def log_job(company, role, date_applied=None, notes=None):
-    conn = get_conn()
-    conn.execute("INSERT INTO jobs (company, role, date_applied, notes) VALUES (?, ?, ?, ?)",
-                 (company, role, date_applied or datetime.today().date(), notes))
     conn.commit()
     conn.close()

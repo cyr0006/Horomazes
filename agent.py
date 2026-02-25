@@ -19,6 +19,7 @@ import anthropic
 import click
 from dotenv import load_dotenv
 from career import db_career
+from academia import db_academia
 load_dotenv()
 client = anthropic.Anthropic()
 
