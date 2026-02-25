@@ -1,11 +1,12 @@
-# Log an event
 import click
-from dotenv import cli
-from agent import get_db_module
+from career import db_career as db_module
 
-db_module = get_db_module("career")
+@click.group()
+def career_cli():
+    """Career agent commands."""
+    pass
 
-@cli.command()
+@career_cli.command()
 @click.argument("description")
 @click.option("--type", default="other", help="achievement/feedback/project/promotion/other")
 @click.option("--impact", default=None)
@@ -15,7 +16,7 @@ def log_event(description, type, impact):
     click.echo(f"Event logged: {description}")
 
 # Log a skill
-@cli.command()
+@career_cli.command()
 @click.argument("name")
 @click.option("--level", default="intermediate", help="beginner/intermediate/advanced/expert")
 @click.option("--notes", default=None)
@@ -25,7 +26,7 @@ def log_skill(name, level, notes):
     click.echo(f"Skill logged: {name} ({level})")
 
 # Log a goal
-@cli.command()
+@career_cli.command()
 @click.argument("goal")
 @click.option("--by", default=None, help="Target date e.g. 2025-12-31")
 def log_goal(goal, by):
@@ -34,7 +35,7 @@ def log_goal(goal, by):
     click.echo(f"Goal logged: {goal}")
 
 # Log a job application
-@cli.command()
+@career_cli.command()
 @click.argument("company")
 @click.argument("role")
 def log_job(company, role):

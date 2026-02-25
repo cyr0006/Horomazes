@@ -1,7 +1,6 @@
 import sqlite3
-from datetime import datetime
 
-DB_PATH = "academia.db"
+DB_PATH = "academia/academia.db"
 
 # Connect to the database
 def get_conn():
@@ -14,43 +13,49 @@ def init_db():
     c.executescript("""
         CREATE TABLE IF NOT EXISTS units (
             id INTEGER PRIMARY KEY,
+            year INTEGER,
+            semester TEXT,
+            code TEXT NOT NULL,
             name TEXT NOT NULL,
-            enrolment_period TEXT,  -- Sem x YYYY
+            score INTEGER,
             grade TEXT,
             notes TEXT
         );
-
     """)
     conn.commit()
     conn.close()
 
 def get_context_block():
     """Pull relevant data to inject into every LLM call"""
-
     conn = get_conn()
     c = conn.cursor()
 
-    units = c.execute("SELECT name, enrolment_period, grade, notes FROM units ORDER BY enrolment_period DESC").fetchall()    
+    units = c.execute(
+        "SELECT year, semester, code, name, score, grade, notes FROM units ORDER BY year, semester"
+    ).fetchall()
+
     conn.close()
 
     context = "## CONTEXT\n\n"
-
     context += "### Units\n"
-    context += "\n".join([f"- {u[0]} ({u[1]}) — grade: {u[2]} {f'| {u[3]}' if u[3] else ''}" for u in units]) or "None logged yet."
-    
+    context += "\n".join([
+        f"- [{u[0]} {u[1]}] {u[2]} — {u[3]} | Score: {u[4]} | Grade: {u[5]}{f' | {u[6]}' if u[6] else ''}"
+        for u in units
+    ]) or "None logged yet."
+
     return context
 
 # --- Helpers --- #
 
 
-def log_unit(name, enrolment_period, grade=None, notes=None):
+def log_unit(code, name, year, semester, score=None, grade=None, notes=None):
     conn = get_conn()
     c = conn.cursor()
 
     c.execute("""
-        INSERT INTO units (name, enrolment_period, grade, notes)
-        VALUES (?, ?, ?, ?)
-    """, (name, enrolment_period, grade, notes))
+        INSERT INTO units (year, semester, code, name, score, grade, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (year, semester, code, name, score, grade, notes))
 
     conn.commit()
     conn.close()

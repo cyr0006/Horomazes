@@ -1,14 +1,17 @@
 import click
 from dotenv import cli
-from agent import get_db_module
+from academia import db_academia
 
-db_module = get_db_module("academia")
-
-@cli.command()
+@click.group()
+def academia_cli():
+    """Academia agent commands."""
+    pass
+@academia_cli.command()
 @click.argument("name")
-@click.option("--type", default="other", help="achievement/feedback/project/promotion/other")
-@click.option("--impact", default=None)
-def log_event(name, enrolment_period, grade=None, notes=None):
+@click.option("--enrolment_period", default=None, help="Enrolment period e.g. Sem1 2023")
+@click.option("--grade", default=None)
+@click.option("--notes", default=None)
+def log_unit(name, enrolment_period, grade=None, notes=None):
     """Log a unit."""
-    db_module.log_event(name, enrolment_period, grade=grade, notes=notes)
+    db_academia.log_unit(name, enrolment_period, grade=grade, notes=notes)
     click.echo(f"Unit logged: {name}")
