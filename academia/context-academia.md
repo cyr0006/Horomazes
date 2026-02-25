@@ -17,3 +17,8 @@ Ultimately I am committed to this meteoric rise and radical growth mindset and I
 ## Work and life
 
 In 2023 I began working for Cardinia Shire Council and work there as a customer support officer earning $41 Per hour casually. I also go to the gym about 4-5 days per week as well as doing miscelanious events and hang outs with friends.
+
+## Goals
+
+- I aim to finish my degree as soon as possible
+- I aim to fill out my 70 hours of CPD hours with some meaningful experience (I am actively applying for internships and other positions)

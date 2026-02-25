@@ -18,10 +18,22 @@ Commands:
 import anthropic
 import click
 from dotenv import load_dotenv
-from career import db_career
-from academia import db_academia
 load_dotenv()
 client = anthropic.Anthropic()
+
+#database module imports
+from career import db_career
+from academia import db_academia
+from fitness import db_fitness
+from finance import db_finance
+
+#CLI imports
+from career.career_cli import career_cli
+from academia.academia_cli import academia_cli
+from fitness.fitness_cli import fitness_cli
+from finance.finance_cli import finance_cli
+
+
 
 def get_db_module(agent):
     if agent == "career":
@@ -53,8 +65,9 @@ def load_personal_context(agent):
 #Main function to ask the agent a question and get a response
 def ask(user_message, agent):
     init(agent)
+    db_module = get_db_module(agent)
     system = load_system_prompt(agent)
-    db_context = db.get_context_block(agent)
+    db_context = db_module.get_context_block(agent)
     personal_context = load_personal_context(agent)
    
     #Context window consists of personal context + database context + user message, separated by --- to help the model understand the structure
@@ -82,7 +95,8 @@ def cli():
 @click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
 def init(agent):
     """Initialise the database."""
-    db.init_db(agent)
+    db_module = get_db_module(agent)
+    db_module.init_db(agent)
     click.echo("Database initialised for agent: " + agent)
 
 # No chat history or context query - just a one-off question to the agent, useful for quick queries without needing to start a full conversation
@@ -95,52 +109,15 @@ def query(message, agent):
     response = ask(message, agent)
     click.echo(response)
 
-# Log an event
-@cli.command()
-@click.argument("description")
-@click.option("--type", default="other", help="achievement/feedback/project/promotion/other")
-@click.option("--impact", default=None)
-def log_event(description, type, impact):
-    """Log a career event."""
-    db.log_event(description, type, impact)
-    click.echo(f"Event logged: {description}")
-
-# Log a skill
-@cli.command()
-@click.argument("name")
-@click.option("--level", default="intermediate", help="beginner/intermediate/advanced/expert")
-@click.option("--notes", default=None)
-def log_skill(name, level, notes):
-    """Log or update a skill."""
-    db.log_skill(name, level, notes=notes)
-    click.echo(f"Skill logged: {name} ({level})")
-
-# Log a goal
-@cli.command()
-@click.argument("goal")
-@click.option("--by", default=None, help="Target date e.g. 2025-12-31")
-def log_goal(goal, by):
-    """Log a career goal."""
-    db.log_goal(goal, target_date=by)
-    click.echo(f"Goal logged: {goal}")
-
-# Log a job application
-@cli.command()
-@click.argument("company")
-@click.argument("role")
-def log_job(company, role):
-    """Log a job application."""
-    db.log_job(company, role)
-    click.echo(f"Application logged: {role} at {company}")
-
 # Chat with message histroy as context
 @cli.command()
 @click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
 def chat(agent):
     """Start an interactive conversation with the agent."""
     init(agent)
+    db_module = get_db_module(agent)
     system = load_system_prompt(agent)
-    db_context = db.get_context_block(agent)
+    db_context = db_module.get_context_block(agent)
     personal_context = load_personal_context(agent)
     
     base_context = f"{personal_context}\n\n{db_context}"
@@ -174,6 +151,13 @@ def chat(agent):
         conversation_history.append({"role": "assistant", "content": reply})
         
         click.echo(f"\nAgent: {reply}\n")
+
+#CLI command groups for different agents
+cli.add_command(career_cli, name="career")
+cli.add_command(fitness_cli, name="fitness")
+cli.add_command(finance_cli, name="finance")
+cli.add_command(academia_cli, name="academia")
+
 
 if __name__ == "__main__":
     cli()
