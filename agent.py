@@ -23,6 +23,20 @@ from academia import db_academia
 load_dotenv()
 client = anthropic.Anthropic()
 
+def get_db_module(agent):
+    if agent == "career":
+        from career.db_career import db_career as db_module
+    elif agent == "fitness":
+        from fitness.db_fitness import db_fitness as db_module
+    elif agent == "finance":
+        from finance.db_finance import db_fitness as db_module
+    elif agent == "academia":
+        from academia.db_academia import db_academia as db_module
+    else:
+        raise ValueError(f"Unknown agent: {agent}")
+    
+    return db_module
+
 #Load AI instructions
 def load_system_prompt(agent):
     with open(f"prompts/system-{agent}.md", "r") as f:
