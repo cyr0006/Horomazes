@@ -20,7 +20,7 @@ import click
 from dotenv import load_dotenv
 load_dotenv()
 
-import coordinator
+from coordinator import coordinator
 from career.career_cli import career_cli
 from academia.academia_cli import academia_cli
 # from fitness.fitness_cli import fitness_cli

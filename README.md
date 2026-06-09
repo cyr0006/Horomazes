@@ -23,16 +23,40 @@ With these 3 steps the setup is complete.
 
 # Usage
 
-Commands:
+# Usage
 
-- `init`: Initialise the database.
-- `query <message>`: Ask the agent anything.
-- `log-event <description> [--type <type>] [--impact <impact>]`
-- `log-skill <name> [--level <level>] [--notes <notes>]`
-- `log-goal <goal> [--by <target_date>]`
-- `log-job <company> <role>`
-- `chat`: Start an interactive conversation with the agent.
-- Exit the chat with 'exit'
+## Talking to the agent
+
+- `python agent.py query "<message>"` — one-off question through the coordinator
+- `python agent.py chat` — interactive conversation with the coordinator (type `exit` to quit)
+
+## Database setup
+
+- `python agent.py init --agent career` — initialise the career DB
+- `python agent.py init --agent academia` — initialise the academia DB
+- `python agent.py init --agent finance` — initialise the finance DB
+
+## Career commands
+
+- `python agent.py career log-event "<description>" [--type <type>] [--impact <impact>]`
+- `python agent.py career log-skill "<name>" [--level <level>] [--notes <notes>]`
+- `python agent.py career log-goal "<goal>" [--by <target_date>]`
+- `python agent.py career log-job "<company>" "<role>"`
+
+## Academia commands
+
+- `python agent.py academia log-unit <code> "<name>" --year <year> --sem <sem> [--grade <grade>] [--score <score>] [--notes <notes>]`
+- `python agent.py academia update-unit <code> "<name>" --year <year> --sem <sem> [--grade <grade>] [--score <score>] [--notes <notes>]`
+
+## Updating context
+
+The agent's intelligence is only as good as the data it has. Keep these up to date:
+
+- **personal_context.md** — your backstory, values, long-term goals. Edit manually when something significant changes.
+- **academia/context-academia.md** — degree structure and grading scale. Rarely needs editing.
+- **Career DB** — log jobs, skills, events, and goals via CLI as they happen.
+- **Academia DB** — update unit grades at the end of each semester via `update-unit`.
+- **finance/context-finance.md** — update your financial snapshot manually each month until a finance DB is in place.
 
 # Contact
 
