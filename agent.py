@@ -138,47 +138,62 @@ def query(message, agent):
 def chat(agent):
     """Start an interactive conversation with the agent."""
     db_module = get_db_module(agent)
-    system = load_system_prompt(agent)
+    system_prompt = load_system_prompt(agent)
     db_context = db_module.get_context_block()
     personal_context = load_personal_context(agent)
     aux = load_auxiliary_context(agent)
 
-   
-    base_context = []
+    # Build static context once
+    static_context = []
     if aux:
-        base_context.append(aux)
-    
-    #Context window consists of personal context + database context + user message, separated by --- to help the model understand the structure
-    base_context.append({"type": "text", "text": f"{personal_context}\n\n{db_context}"})
-    conversation_history = []
-    
+        static_context.append(aux)
+
+    static_context.append({
+        "type": "text",
+        "text": (
+            "### PERSONAL CONTEXT\n"
+            f"{personal_context}\n\n"
+            "### DATABASE CONTEXT\n"
+            f"{db_context}\n"
+        )
+    })
+
+    # Conversation history (NO system role here)
+    conversation_history = [
+        {"role": "assistant", "content": static_context}
+    ]
+
     click.echo(f"\n{agent.capitalize()} Agent ready. Type 'exit' to quit.\n")
-    
+
     while True:
         user_input = input("You: ").strip()
         if user_input.lower() in ("exit", "quit"):
             break
         if not user_input:
             continue
-        
-        # First message includes full context, subsequent ones don't need to repeat it
-        if not conversation_history:
-            content = base_context + [{"type": "text", "text": f"---\n\n{user_input}"}]
-        else:
-            content = user_input
-            
-        conversation_history.append({"role": "user", "content": content})
-        
+
+        # Add user message
+        conversation_history.append({
+            "role": "user",
+            "content": user_input
+        })
+
+        # Query Claude
         response = client.messages.create(
             model="claude-sonnet-4-6",
             max_tokens=1000,
-            system=system,
+            system=system_prompt,   # <-- Correct place for system prompt
             messages=conversation_history
         )
-        
+
         reply = response.content[0].text
-        conversation_history.append({"role": "assistant", "content": reply})
-        
+
+        # Add assistant reply to history
+        conversation_history.append({
+            "role": "assistant",
+            "content": reply
+        })
+
         click.echo(f"\nAgent: {reply}\n")
 
 #CLI command groups for different agents

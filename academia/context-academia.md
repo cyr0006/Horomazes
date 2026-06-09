@@ -23,7 +23,7 @@ In 2023 I began working for Cardinia Shire Council and work there as a customer 
 - I aim to finish my degree as soon as possible
 - I aim to fill out my 70 hours of CPD hours with some meaningful experience (I am actively applying for internships and other positions)
 
-## Resume
+## Resume; just the text
 
 Aryan Cyrus – Resume
 
@@ -36,100 +36,8 @@ Email: Aryan.m10@yahoo.com
 My website: https://acyrus.netlify.app/  
 Availabilities:
 As needed
-Please don’t hesitate to contact me using the details above.  
-Role
-I am writing to express my interest in the [insert program/role] role advertised.
+Please don’t hesitate to contact me using the details above.
 
-Education:
-
-- Bachelor (Honors) of Software Engineering at
-  Monash University Clayton Campus (Ongoing) Technical Skills:
-  Programming and scripting
-- Various programming Languages (Python, JavaScript, Java, MATLAB, SQL, NOSQL (various), Assembly, C++)
-- Markup Languages such as HTML and CSS (And several web development frameworks and tools such as REACT, tailwind and Vite)
-- Shell Scripting
-
-Computer Science Fundamentals
-
-- In depth knowledge of data structures/algorithms, discrete mathematics and other fundamental concepts of computer science.
-
-Databases
-
-- SQL and NOSQL; a comprehensive collection of associated database tools (MongoDB, Cassanda, Neo4J etc)
-
-DevOps and Tools
-
-- Knowledge of software quality and security testing; including through pipelining and CI/CD practices
-- Use of GIT and other version control tools
-- Use of Docker for production, staging, development, testing, and CI workflows.
-- Use and configuration of VMware
-- Use of Linux
-
-Data, Analytics and Business intelligence
-
-- Microsoft ecosystem and Microsoft Office Products
-- Power BI
-- Designing and implementing data warehouses
-- Data cleaning, and OLAP
-
-Other
-
-- Experience working with a host of real-time enterprise systems (including CRMs, receipting and accounting software)
-- CAD using programs such as SolidWorks and Fusion360
-
-Non-technical Skills and attributes:
-
-- Very strong written and verbal communication skills
-- Time management
-- Conflict management
-- Quick learner
-- Organisational skills; both personal and interpersonal
-- Driven to constantly learn and improve as a lifestyle
-- Problem solving skills
-- Teamwork (non-technical and/or technical environment)
-- Receptive to constructive feedback
-- Fluency in 2 Languages: English (Primary) and Persian (Secondary)
-  Current Role – Cardinia Shire Council – Customer Support Officer (October 2022 - Present):
-  Key responsibilities, contributions and impacts:
-  • Coordinating with dozens of departments to fulfill requests
-  o Resolution of 60+ customer enquiries daily with great attention to detail
-  • Provision of accurate, concise and reliable information which guide the outcomes and work of dozens or departments
-  • Record keeping
-  • Processing payments
-  • Maintaining security and privacy standards
-  • Communicating with technical and non-technical stakeholders on critical issues
-  o Aiding dozens of customers in understanding local and state laws, regulations and procedures
-
-Notable Projects:
-
- My personal website with AI chat functionality
- Custom made bot helping over a dozen daily users log, track and adhere to daily goals
- A multi-agent AI system with a coordinator to monitor personal finances, fitness and goals
- Home lab/NAS server using Raspberry Pi running on Pi OS (based on Debian)
-
-References:
-
-- Nisa Hope – Former Colleague – Cardinia Shire Council – Rates and Valuations
-  o Ph: 0474 494 956
-- Shane Majidi – Former Colleague – Ingham Enterprises
-  o Ph: 0422 083 893
-- Chloe Timmins – Current Team Leader – Cardinia Shire Council – Customer Service
-  o Ph: 0448 190 607
-- Kyle Bibby – Project Teammate – Monash University
-  o Ph: 0420 821 198
-
-Aryan Cyrus – Resume
-
-My details at a glance
-Name: Aryan Cyrus
-Current Role: Customer Support
-Officer – Cardinia Shire Council
-Phone: 0470311472
-Email: Aryan.m10@yahoo.com
-My website: https://acyrus.netlify.app/  
-Availabilities:
-As needed
-Please don’t hesitate to contact me using the details above.  
 Role
 I am writing to express my interest in the University Partnership Employment Program advertised.
 
@@ -182,23 +90,25 @@ Non-technical Skills and attributes:
 - Teamwork (non-technical and/or technical environment)
 - Receptive to constructive feedback
 - Fluency in 2 Languages: English (Primary) and Persian (Secondary)
-  Current Role – Cardinia Shire Council – Customer Support Officer (October 2022 - Present):
-  Key responsibilities, contributions and impacts:
-  • Coordinating with dozens of departments to fulfill requests
-  o Resolution of 60+ customer enquiries daily with great attention to detail
-  • Provision of accurate, concise and reliable information which guide the outcomes and work of dozens or departments
-  • Record keeping
-  • Processing payments
-  • Maintaining security and privacy standards
-  • Communicating with technical and non-technical stakeholders on critical issues
-  o Aiding dozens of customers in understanding local and state laws, regulations and procedures
+
+Current Role – Cardinia Shire Council – Customer Support Officer (October 2022 - Present):
+Key responsibilities, contributions and impacts:
+
+- Coordinating with dozens of departments to fulfill requests
+  - Resolution of 60+ customer enquiries daily with great attention to detail
+- Provision of accurate, concise and reliable information which guide the outcomes and work of dozens or departments
+- Record keeping
+- Processing payments
+- Maintaining security and privacy standards
+- Communicating with technical and non-technical stakeholders on critical issues
+  - Aiding dozens of customers in understanding local and state laws, regulations and procedures
 
 Notable Projects:
 
- My personal website with AI chat functionality
- Custom made bot helping over a dozen daily users log, track and adhere to daily goals
- A multi-agent AI system with a coordinator to monitor personal finances, fitness and goals
- Home lab/NAS server using Raspberry Pi running on Pi OS (based on Debian)
+- My personal website with AI chat functionality
+- Custom made bot helping over a dozen daily users log, track and adhere to daily goals
+- A multi-agent AI system with a coordinator to monitor personal finances, fitness and goals
+- Home lab/NAS server using Raspberry Pi running on Pi OS (based on Debian)
 
 References:
 

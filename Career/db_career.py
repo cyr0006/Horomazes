@@ -55,9 +55,9 @@ def get_context_block():
     c = conn.cursor()
 
     skills = c.execute("SELECT name, proficiency, last_used, notes FROM skills ORDER BY last_used DESC").fetchall()
-    events = c.execute("SELECT date, type, description, impact FROM career_events ORDER BY date DESC LIMIT 10").fetchall()
+    events = c.execute("SELECT date, type, description, impact FROM career_events ORDER BY date").fetchall()
     goals = c.execute("SELECT goal, target_date, status, notes FROM goals WHERE status = 'active'").fetchall()
-    jobs = c.execute("SELECT company, role, date_applied, status FROM jobs ORDER BY date_applied DESC LIMIT 10").fetchall()
+    jobs = c.execute("SELECT company, role, date_applied, status FROM jobs ORDER BY date_applied").fetchall()
     
     conn.close()
 

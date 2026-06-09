@@ -164,124 +164,132 @@ DB_PATH = "academia/academia.db"
 #     conn.close()
 #     print(f"\nDone. {inserted} events inserted.")
 
+DB_PATH = "career/career.db"
 
-# jobs = [
-#     ("Breen Printing",          "Web-to-Print Workflow Developer",                          "2026-02-19", "applied",   "Healesville VIC"),
-#     ("Future Events Lab",       "Fully Remote - Part Time Analyst / Developer",             "2026-02-17", "applied",   "Carlton VIC — Remote"),
-#     ("Ottica AI",               "Technical Support & Hardware Technician",                  "2026-02-17", "applied",   "Brunswick East VIC — $30-45/hr"),
-#     ("Private Advertiser",      "IT Support Technician (Part-Time)",                        "2026-02-19", "rejected",  "Chadstone VIC — expired"),
-#     ("Valui Healthcare",        "Developer & AI Branding",                                  "2026-02-12", "applied",   "Dandenong South VIC — $33-48/hr, viewed by employer"),
-#     ("Moose Toys",              "Moose Intern Program",                                     "2026-02-11", "withdrawn", "Melbourne VIC — visited employer site, expired"),
-#     ("Eastern Health",          "Data Engineer - Research",                                 "2026-02-07", "withdrawn", "Box Hill VIC — visited employer site, expired"),
-#     ("Tiny Technologies",       "Intern QA Engineer",                                       "2026-02-07", "applied",   "Brisbane QLD — expired"),
-#     ("Peoplebank Australia",    "Data Analyst (PowerBI/Snowflake/Alteryx/Matillion)",       "2026-01-23", "withdrawn", "Dandenong VIC — $45-55/hr, visited employer site, expired"),
-#     ("Vanguard Group Pty Ltd",  "Junior Application Engineer",                              "2026-01-22", "withdrawn", "Melbourne VIC — visited employer site, expired"),
-#     ("NewChurchTek Pty Ltd",    "Casual Software Systems Support",                          "2026-01-22", "applied",   "Melbourne VIC — $29-32/hr, expired"),
-#     ("PANDA",                   "Data Systems Administrator (Data & Solutions) - Remote",   "2025-12-17", "applied",   "Melbourne VIC — remote, expired"),
-#     ("Nova Systems Pty Ltd",    "Expressions of Interest - 2027 Graduate Opportunities",   "2025-12-14", "applied",   "Melbourne VIC — visited employer site, expired"),
-#     ("Hordern Consulting",      "SQL Developer",                                            "2025-12-07", "rejected",  "Melbourne VIC —  expired"),
-#     ("QEC",                     "Business Intelligence Analyst",                            "2025-11-25", "applied",   "Noble Park VIC — visited employer site"),
-# ]
 
-# def seed4():
-#     conn = sqlite3.connect(DB_PATH)
-#     c = conn.cursor()
-
-#     # Add notes column if it doesn't exist
-#     try:
-#         c.execute("ALTER TABLE jobs ADD COLUMN notes TEXT")
-#     except:
-#         pass
-
-#     inserted = 0
-#     for company, role, date, status, notes in jobs:
-#         existing = c.execute(
-#             "SELECT id FROM jobs WHERE company = ? AND role = ?",
-#             (company, role)
-#         ).fetchone()
-#         if existing:
-#             print(f"  SKIP (already exists): {company} — {role}")
-#             continue
-#         c.execute(
-#             "INSERT INTO jobs (company, role, date_applied, status, notes) VALUES (?, ?, ?, ?, ?)",
-#             (company, role, date, status, notes)
-#         )
-#         print(f"  OK: [{date}] {company} — {role} ({status})")
-#         inserted += 1
-
-#     conn.commit()
-#     conn.close()
-#     print(f"\nDone. {inserted} jobs inserted.")
-
-units = [
-    (2022,"Sem1", "ENG1011", "ENGINEERING METHODS", 55, "P"),
-    (2022,"Sem1", "ENG1012", "ENGINEERING DESIGN", 76, "D"),
-    (2022,"Sem1", "ENG1013", "ENGINEERING SMART SYSTEMS",  72, "D"),
-    (2022,"Sem1", "ENG1090", "FOUNDATION MATHEMATICS",  62, "C"),
-    (2022,"Sem2", "ENG1005", "ENGINEERING MATHEMATICS", 17, "N"),
-    (2022,"Sem2", "ENG1014", "ENGINEERING NUMERICAL ANALYSIS", 42, "N"),
-    (2022,"Sem2", "FIT1056", "COLLABORATIVE ENGINEERING FOR WEB APPLICATIONS", 83, "HD"),
-    (2022,"Sem2", "PHS1002", "PHYSICS FOR ENGINEERING", 42, "N"),
-    (2023,"Sem1", "ENG1005", "ENGINEERING MATHEMATICS",  None, "DISCONTINUED"),
-    (2023,"Sem1", "ENG1014", "ENGINEERING NUMERICAL ANALYSIS",  57, "P"),
-    (2023,"Sem1", "FIT1045", "INTRODUCTION TO PROGRAMMING",  46, "N"),
-    (2023,"Sem2", "MAT1830", "DISCRETE MATHEMATICS FOR COMPUTER SCIENCE",  42, "N"),
-    (2023,"Sem2", "FIT2101", "SOFTWARE ENGINEERING PROCESS AND MANAGEMENT", 78, "D"),
-    (2023,"Sem2", "FIT2107", "SOFTWARE QUALITY AND TESTING", 50, "P"),
-    (2024,"Summer", "FIT3171", "DATABASES",  68, "C"),
-    (2024,"Sem1", "FIT2085", "FUNDAMENTALS OF ALGORITHMS FOR ENGINEERS",  57, "P"),
-    (2024,"Sem1", "MAT1830", "DISCRETE MATHEMATICS FOR COMPUTER SCIENCE",  60, "C"),
-    (2024,"Sem2", "ENG1005", "ENGINEERING MATHEMATICS", 57, "P"),
-    (2024,"Sem2", "FIT2004", "ALGORITHMS AND DATA STRUCTURES", 42, "N"),
-    (2025,"Sem1", "FIT2004", "ALGORITHMS AND DATA STRUCTURES",  54, "P"),
-    (2025,"Sem1", "FIT2099", "OBJECT ORIENTED DESIGN AND IMPLEMENTATION",  82, "HD"),
-    (2025,"Sem1", "FIT3159", "COMPUTER ARCHITECTURE",  83,"HD"),
-    (2025,"Sem2", "FIT2100", "OPERATING SYSTEMS", 82, "HD"),
-    (2025,"Sem2", "FIT3003", "BUSINESS INTELLIGENCE AND DATA WAREHOUSING", 71, "D"),
-    (2025,"Sem2", "FIT3138", "REAL TIME ENTERPRISE SYSTEMS", 84, "HD"),
-    (2025,"Sem2", "FIT3176", "ADVANCED DATABASE DESIGN", 74, "D"),
-    (2026,"Summer", "FIT3175", "USABILITY",  None, "INCOMPLETE"),
-    (2026,"Sem1", "FIT3170", "SOFTWARE ENGINEERING PRACTICE", None, "INCOMPLETE"),
-    (2026,"Sem1", "FIT3077", "SOFTWARE ENGINEERING: ARCHITECTURE AND DESIGN",  None, "INCOMPLETE"),
-    (2026,"Sem1", "FIT4165", "COMPUTER NETWORKS",  None, "INCOMPLETE"),
-    (2026,"Sem1", "ENG0001", "ENGINEERING CONTINUOUS PROFESSIONAL DEVELOPMENT", None, "INCOMPLETE")
+jobs = [
+    ("KPMG",                   "2026/27 KPMG Vacationer Program - Technology & Digital",     "2026-04-07", "haven't heard back, Likely intakes are later in year",   "location: Melbourne VIC"),
+    ("Deloitte",               "Deloitte Cyber Vacationer Program | 2026/27",                "2026-03-06", "haven't heard back, Likely intakes are later in year",   "location: Melbourne VIC"),
+    ("Quantium",               "Quantium Data Analytics Virtual Experience Program",         "2026-02-10", "haven't heard back, Likely intakes are later in year",   "location: Melbourne VIC"),
+    ("Airwallex",              "2026/27 Software Engineering Intern Program",               "2026-03-06", "haven't heard back, Likely intakes are later in year",   "location: Melbourne VIC"),
+    ("SEEK Grad",              "2026/27 EY Vacationer Program - Computer Science",          "2026-03-06", "haven't heard back, Likely intakes are later in year",   "location: Melbourne VIC"),
+    ("BHP",                    "BHP 2026 Intern Program",                                   "2026-03-06", "haven't heard back, Likely intakes are later in year",   "location: Melbourne VIC"),
+    ("Breen Printing",          "Web-to-Print Workflow Developer",                          "2026-02-19", "Never responded ",   "location: Healesville VIC"),
+    ("Future Events Lab",       "Fully Remote - Part Time Analyst / Developer",             "2026-02-17", "Never responded",   "location: Carlton VIC — Remote"),
+    ("Ottica AI",               "Technical Support & Hardware Technician",                  "2026-02-17", "Never responded ",   "location: Brunswick East VIC"),
+    ("Private Advertiser",      "IT Support Technician (Part-Time)",                        "2026-02-19", "Never responded ",  "location: Chadstone VIC"),
+    ("Valui Healthcare",        "Developer & AI Branding",                                  "2026-02-12", "Never responded ",   "location: Dandenong South VIC "),
+    ("Moose Toys",              "Moose Intern Program",                                     "2026-02-11", "Never responded ", "location: Melbourne VIC"),
+    ("Eastern Health",          "Data Engineer - Research",                                 "2026-02-07", "Never responded ", "location: Box Hill VIC "),
+    ("Tiny Technologies",       "Intern QA Engineer",                                       "2026-02-07", "Never responded ",   "location: Brisbane QLD"),
+    ("Peoplebank Australia",    "Data Analyst (PowerBI/Snowflake/Alteryx/Matillion)",       "2026-01-23", "Never responded ", "location: Dandenong VIC"),
+    ("Vanguard Group Pty Ltd",  "Junior Application Engineer",                              "2026-01-22", "Never responded ", "location: Melbourne VIC"),
+    ("NewChurchTek Pty Ltd",    "Casual Software Systems Support",                          "2026-01-22", "Never responded ",   "location: Melbourne VIC"),
+    ("PANDA",                   "Data Systems Administrator (Data & Solutions) - Remote",   "2025-12-17", "Rejected ",   "location: Melbourne VIC"),
+    ("Nova Systems Pty Ltd",    "Expressions of Interest - 2027 Graduate Opportunities",   "2025-12-14", "rejected ",   "location: Melbourne VIC"),
+    ("Hordern Consulting",      "SQL Developer",                                            "2025-12-07", "Never responded ",  "location: Melbourne VIC"),
+    ("QEC",                     "Business Intelligence Analyst",                            "2025-11-25", "Never responded ",   "location: Noble Park VIC"),
 ]
 
-def seed_units():
+def seed_applications():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
-    # Add new columns if upgrading an existing db
-    for col in ["year INTEGER", "semester TEXT", "code TEXT", "score INTEGER"]:
-        try:
-            c.execute(f"ALTER TABLE units ADD COLUMN {col}")
-        except:
-            pass
+    # Add notes column if it doesn't exist
+    try:
+        c.execute("ALTER TABLE jobs ADD COLUMN notes TEXT")
+    except:
+        pass
 
     inserted = 0
-    skipped = 0
-
-    for year, sem, code, title, score, grade in units:
+    for company, role, date, status, notes in jobs:
         existing = c.execute(
-            "SELECT id FROM units WHERE code = ? AND year = ? AND semester = ?",
-            (code, year, sem)
+            "SELECT id FROM jobs WHERE company = ? AND role = ?",
+            (company, role)
         ).fetchone()
-
         if existing:
-            print(f"  SKIP: {code} ({sem} {year})")
-            skipped += 1
+            print(f"  SKIP (already exists): {company} — {role}")
             continue
-
         c.execute(
-            "INSERT INTO units (year, semester, code, name, score, grade) VALUES (?, ?, ?, ?, ?, ?)",
-            (year, sem, code, title, score, grade)
+            "INSERT INTO jobs (company, role, date_applied, status, notes) VALUES (?, ?, ?, ?, ?)",
+            (company, role, date, status, notes)
         )
-        print(f"  OK: {code} ({sem} {year}) — {grade}")
+        print(f"  OK: [{date}] {company} — {role} ({status})")
         inserted += 1
 
     conn.commit()
     conn.close()
-    print(f"\nDone. {inserted} inserted, {skipped} skipped.")
+    print(f"\nDone. {inserted} jobs inserted.")
+
+# units = [
+#     (2022,"Sem1", "ENG1011", "ENGINEERING METHODS", 55, "P"),
+#     (2022,"Sem1", "ENG1012", "ENGINEERING DESIGN", 76, "D"),
+#     (2022,"Sem1", "ENG1013", "ENGINEERING SMART SYSTEMS",  72, "D"),
+#     (2022,"Sem1", "ENG1090", "FOUNDATION MATHEMATICS",  62, "C"),
+#     (2022,"Sem2", "ENG1005", "ENGINEERING MATHEMATICS", 17, "N"),
+#     (2022,"Sem2", "ENG1014", "ENGINEERING NUMERICAL ANALYSIS", 42, "N"),
+#     (2022,"Sem2", "FIT1056", "COLLABORATIVE ENGINEERING FOR WEB APPLICATIONS", 83, "HD"),
+#     (2022,"Sem2", "PHS1002", "PHYSICS FOR ENGINEERING", 42, "N"),
+#     (2023,"Sem1", "ENG1005", "ENGINEERING MATHEMATICS",  None, "DISCONTINUED"),
+#     (2023,"Sem1", "ENG1014", "ENGINEERING NUMERICAL ANALYSIS",  57, "P"),
+#     (2023,"Sem1", "FIT1045", "INTRODUCTION TO PROGRAMMING",  46, "N"),
+#     (2023,"Sem2", "MAT1830", "DISCRETE MATHEMATICS FOR COMPUTER SCIENCE",  42, "N"),
+#     (2023,"Sem2", "FIT2101", "SOFTWARE ENGINEERING PROCESS AND MANAGEMENT", 78, "D"),
+#     (2023,"Sem2", "FIT2107", "SOFTWARE QUALITY AND TESTING", 50, "P"),
+#     (2024,"Summer", "FIT3171", "DATABASES",  68, "C"),
+#     (2024,"Sem1", "FIT2085", "FUNDAMENTALS OF ALGORITHMS FOR ENGINEERS",  57, "P"),
+#     (2024,"Sem1", "MAT1830", "DISCRETE MATHEMATICS FOR COMPUTER SCIENCE",  60, "C"),
+#     (2024,"Sem2", "ENG1005", "ENGINEERING MATHEMATICS", 57, "P"),
+#     (2024,"Sem2", "FIT2004", "ALGORITHMS AND DATA STRUCTURES", 42, "N"),
+#     (2025,"Sem1", "FIT2004", "ALGORITHMS AND DATA STRUCTURES",  54, "P"),
+#     (2025,"Sem1", "FIT2099", "OBJECT ORIENTED DESIGN AND IMPLEMENTATION",  82, "HD"),
+#     (2025,"Sem1", "FIT3159", "COMPUTER ARCHITECTURE",  83,"HD"),
+#     (2025,"Sem2", "FIT2100", "OPERATING SYSTEMS", 82, "HD"),
+#     (2025,"Sem2", "FIT3003", "BUSINESS INTELLIGENCE AND DATA WAREHOUSING", 71, "D"),
+#     (2025,"Sem2", "FIT3138", "REAL TIME ENTERPRISE SYSTEMS", 84, "HD"),
+#     (2025,"Sem2", "FIT3176", "ADVANCED DATABASE DESIGN", 74, "D"),
+#     (2026,"Summer", "FIT3175", "USABILITY",  None, "INCOMPLETE"),
+#     (2026,"Sem1", "FIT3170", "SOFTWARE ENGINEERING PRACTICE", None, "INCOMPLETE"),
+#     (2026,"Sem1", "FIT3077", "SOFTWARE ENGINEERING: ARCHITECTURE AND DESIGN",  None, "INCOMPLETE"),
+#     (2026,"Sem1", "FIT4165", "COMPUTER NETWORKS",  None, "INCOMPLETE"),
+#     (2026,"Sem1", "ENG0001", "ENGINEERING CONTINUOUS PROFESSIONAL DEVELOPMENT", None, "INCOMPLETE")
+# ]
+
+# def seed_units():
+#     conn = sqlite3.connect(DB_PATH)
+#     c = conn.cursor()
+
+#     # Add new columns if upgrading an existing db
+#     for col in ["year INTEGER", "semester TEXT", "code TEXT", "score INTEGER"]:
+#         try:
+#             c.execute(f"ALTER TABLE units ADD COLUMN {col}")
+#         except:
+#             pass
+
+#     inserted = 0
+#     skipped = 0
+
+#     for year, sem, code, title, score, grade in units:
+#         existing = c.execute(
+#             "SELECT id FROM units WHERE code = ? AND year = ? AND semester = ?",
+#             (code, year, sem)
+#         ).fetchone()
+
+#         if existing:
+#             print(f"  SKIP: {code} ({sem} {year})")
+#             skipped += 1
+#             continue
+
+#         c.execute(
+#             "INSERT INTO units (year, semester, code, name, score, grade) VALUES (?, ?, ?, ?, ?, ?)",
+#             (year, sem, code, title, score, grade)
+#         )
+#         print(f"  OK: {code} ({sem} {year}) — {grade}")
+#         inserted += 1
+
+#     conn.commit()
+#     conn.close()
+#     print(f"\nDone. {inserted} inserted, {skipped} skipped.")
 
 if __name__ == "__main__":
-    seed_units()
+    seed_applications()
