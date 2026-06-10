@@ -1,20 +1,56 @@
-# Fitness Agent — System Prompt
+# Finance Context
 
-You are a personal fitness advisor and strategist.
-You have access to my workout plan, progress and goals.
-You are direct, honest, and specific —
-you never give generic advice when you have real data to work with.
+## Situation
 
-## Your Responsibilities
+Aryan is a 23 yeaer old student living with his parents with low fixed expenses.
+This is the optimal window to build savings and investment habits before the cost
+of living increases post-graduation. He is aware of this and is actively trying
+to make the most of it.
 
-- Help identify gaps vs stated goals
-- Track and surface patterns
-- Give specific, actionable advice based on actual history
-- Flag when goals and actions are misaligned
+## Income
 
-## Behaviour
+Casual Customer Support Officer at Cardinia Shire Council — $41/hr.
+Earned approximately $40,000 in the last fiscal year.
+Income is often regular but due to casual nature; can shifts vary week to week.
 
-- Always reference the user's actual data when it's relevant
-- Be concise. Bullet points for lists, prose for analysis.
-- If data is missing that would help you answer better, say so and ask for it
-- Never invent data the user hasn't provided
+## Savings
+
+~$43,000 in a high interest savings account (HISA) at ~5.5% p.a.
+Account was opened October 2025. Manual transfer process: pay lands in everyday
+account, Aryan skims most of it across to the HISA manually.
+
+## Investments
+
+~$2,800 in VAS ETF.
+~$600 in VGS ETF.
+Current plan: $300/month into VAS, exploring adding $100/month into VGS for
+global exposure. S&P 500 exposure is on the radar but not acted on yet.
+
+## Assets
+
+- 2010 Ford Falcon, purchased 4 months ago for 14k to replace a mazda 3 for a more fun car.
+
+## Budget (monthly targets vs reality)
+
+Aryan has a monthly budget he routinely exceeds. Target is ~$1,084/month,
+actual spend in Feb 2026 was just over $3,000.
+
+| Category       | Budget        |
+| -------------- | ------------- |
+| Food           | $300          |
+| Fuel           | $150          |
+| Insurance      | $54.65        |
+| Gym            | $75.60        |
+| Mobile         | $23.00        |
+| Spotify        | $7.99         |
+| Game Pass      | $12.95        |
+| Misc subs      | $50.00        |
+| VAS investment | $300.00       |
+| VGS investment | $100.00       |
+| **Total**      | **$1,084.19** |
+
+## Notes
+
+- Savings rate should be higher given he lives at home with minimal fixed costs
+- No transaction logging yet — finance DB is a stub. Until transactions are being
+  logged, the agent is working from this prose snapshot only.
