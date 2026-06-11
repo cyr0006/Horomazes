@@ -18,13 +18,14 @@ Commands:
 
 import click
 from dotenv import load_dotenv
+
+
 load_dotenv()
 
 from coordinator import coordinator
 from career.career_cli import career_cli
 from academia.academia_cli import academia_cli
-# from fitness.fitness_cli import fitness_cli
-# from finance.finance_cli import finance_cli
+from finance.finance_cli import finance_cli
 
 
 def get_db_module(agent):
@@ -91,8 +92,8 @@ def chat():
 
 cli.add_command(career_cli, name="career")
 cli.add_command(academia_cli, name="academia")
+cli.add_command(finance_cli, name="finance")
 # cli.add_command(fitness_cli, name="fitness")
-# cli.add_command(finance_cli, name="finance")
 
 
 if __name__ == "__main__":
