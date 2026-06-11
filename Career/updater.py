@@ -10,7 +10,7 @@ jobs = [
     ("ANZ",                     "Pre Register - 2026/27 Summer Intern Program",             "2026-05-26", "haven't heard back, likely intakes are later in year",  "location: Australia"),
     ("TASTY HOTPOT CLAYTON",    "Data Analyst",                                             "2026-04-07", "Never responded",                                       "location: Clayton VIC"),
     ("KPMG",                    "2026/27 KPMG Vacationer Program - Technology & Digital",   "2026-04-07", "haven't heard back, likely intakes are later in year",  "location: Melbourne VIC"),
-    ("Deloitte",                "Deloitte Cyber Vacationer Program | 2026/27",              "2026-03-06", "haven't heard back, likely intakes are later in year",  "location: Melbourne VIC"),
+    ("Deloitte",                "Deloitte Cyber Vacationer Program | 2026/27",              "2026-03-06", "Rejected",  "location: Melbourne VIC"),
     ("Quantium",                "Quantium Data Analytics Virtual Experience Program",       "2026-02-10", "haven't heard back, likely intakes are later in year",  "location: Melbourne VIC"),
     ("Airwallex",               "2026/27 Software Engineering Intern Program",              "2026-03-06", "haven't heard back, likely intakes are later in year",  "location: Melbourne VIC"),
     ("SEEK Grad",               "2026/27 EY Vacationer Program - Computer Science",        "2026-03-06", "haven't heard back, likely intakes are later in year",  "location: Melbourne VIC"),

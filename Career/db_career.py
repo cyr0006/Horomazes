@@ -42,11 +42,11 @@ def get_context_block():
     return "### Job Applications\n" + "\n".join(lines)
 
 
-def log_job(company, role, date_applied=None, notes=None):
+def log_job(company, role, date_applied=None, status="applied", notes=None):
     conn = get_conn()
     conn.execute(
-        "INSERT INTO jobs (company, role, date_applied, notes) VALUES (?, ?, ?, ?)",
-        (company, role, date_applied or datetime.today().date(), notes)
+        "INSERT INTO jobs (company, role, date_applied, status, notes) VALUES (?, ?, ?, ?, ?)",
+        (company, role, date_applied or datetime.today().date(), status, notes)
     )
     conn.commit()
     conn.close()

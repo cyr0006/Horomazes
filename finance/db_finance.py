@@ -12,12 +12,10 @@ def init_db():
     c = conn.cursor()
 
     c.executescript(""" 
-        CREATE TABLE IF NOT EXISTS transactions (
+        CREATE TABLE IF NOT EXISTS MONTHLY_COSTS (
             id INTEGER PRIMARY KEY, 
-            date TEXT NOT NULL,
-            description TEXT NOT NULL,
+            month TEXT NOT NULL,
             amount REAL NOT NULL,
-            category TEXT,
             notes TEXT
         );
     """)

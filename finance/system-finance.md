@@ -43,11 +43,10 @@ actual spend in Feb 2026 was just over $3,000.
 | Gym            | $75.60        |
 | Mobile         | $23.00        |
 | Spotify        | $7.99         |
-| Game Pass      | $12.95        |
-| Misc subs      | $50.00        |
+| Misc (social)  | $100.00       |
 | VAS investment | $300.00       |
 | VGS investment | $100.00       |
-| **Total**      | **$1,084.19** |
+| **Total**      | **$1,121.24** |
 
 ## Notes
 
