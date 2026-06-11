@@ -6,7 +6,8 @@ client = anthropic.Anthropic()
 
 # ── Path helpers ──────────────────────────────────────────────────────────────
 
-ROOT = Path(__file__).parent
+ROOT = Path(__file__).parent.parent
+
 
 
 def _read(path: Path) -> str:
@@ -86,6 +87,9 @@ def build_content_blocks(user_message: str) -> list:
         pdf = _read_pdf(pdf_path)
         if pdf:
             blocks.append(pdf)
+            print(f"Included PDF context from: {pdf_path.name}")
+        else:
+            print(f"No PDF found at: {pdf_path}, skipping.")
 
     # Personal context prose (single merged file)
     personal = _read(ROOT / "personal_context.md")
