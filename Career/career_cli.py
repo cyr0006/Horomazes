@@ -15,5 +15,5 @@ def career_cli():
 @click.option("--notes", default=None, help="Additional notes")
 def log_job(company, role, date_applied=None, status="applied", notes=None):
     """Log a job application."""
-    db_module.log_job(company, role, date_applied=date_applied, notes=notes)
+    db_module.log_job(company, role, date_applied=date_applied, status=status, notes=notes)
     click.echo(f"Application logged: {role} at {company}")
