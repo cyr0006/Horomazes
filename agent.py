@@ -5,165 +5,77 @@ A command-line tool to help you manage and grow in your career, academia, fitnes
 By Aryan Cyrus
 
 Commands:
-- `init`: Initialise the database.
-- `query <message>`: Ask the agent anything.
-- `chat`: Start an interactive conversation with the agent.
-- `career log-event <description> --type <type> --impact <impact>`: Log a career event.
-- `career log-skill <name> --level <level> --notes <notes>`: Log or update a skill.
-- `career log-goal <goal> --by <target_date>`: Log a career goal.
-- `career log-job <company> <role>`: Log a job application.
-- academia log-unit <name> --enrolment_period <period> --grade <grade> --notes <notes>: Log a unit.
-
-- Exit the chat with 'exit'
+- `init --agent <agent>`: Initialise the database for an agent.
+- `query <message>`: Ask the coordinator anything.
+- `chat`: Start an interactive conversation with the coordinator.
+- `career log-event <description> --type <type> --impact <impact>`
+- `career log-skill <name> --level <level> --notes <notes>`
+- `career log-goal <goal> --by <target_date>`
+- `career log-job <company> <role>`
+- `academia log-unit <code> <name> ...`
+- Exit chat with 'exit'
 """
-#Imports
-import anthropic
+
 import click
 from dotenv import load_dotenv
+
+
 load_dotenv()
-client = anthropic.Anthropic()
-import base64
 
-
-
-
-#CLI imports
+from coordinator import coordinator
 from career.career_cli import career_cli
 from academia.academia_cli import academia_cli
-#from fitness.fitness_cli import fitness_cli
-#from finance.finance_cli import finance_cli
-
+from finance.finance_cli import finance_cli
 
 
 def get_db_module(agent):
     if agent == "career":
-        from career import db_career as db_module
-    elif agent == "fitness":
-        from fitness import db_fitness as db_module
-    elif agent == "finance":
-        from finance import db_finance as db_module
+        from career import db_career
+        return db_career
     elif agent == "academia":
-        from academia import db_academia as db_module
+        from academia import db_academia
+        return db_academia
+    elif agent == "finance":
+        from finance import db_finance
+        return db_finance
+    elif agent == "fitness":
+        from fitness import db_fitness
+        return db_fitness
     else:
         raise ValueError(f"Unknown agent: {agent}")
-    
-    return db_module
 
-#Load AI instructions
-def load_system_prompt(agent):
-    with open(f"{agent}/system-{agent}.md", "r") as f:
-        return f.read()
-    
-#Load context from file for who I am, what I do, and what I want
-def load_personal_context(agent):
-    try:
-        with open(f"{agent}/context-{agent}.md", "r") as f:
-            return f.read()
-    except FileNotFoundError:
-        return ""
 
-def load_auxiliary_context(agent):
-    paths = {
-        "career": "career/resume.pdf",
-        "academia": "academia/course_map.pdf"
-    }
-    
-    path = paths.get(agent)
-    if not path:
-        return None
-    
-    try:
-        with open(path, "rb") as f:
-            data = base64.standard_b64encode(f.read()).decode("utf-8")
-        return {"type": "document", "source": {"type": "base64", "media_type": "application/pdf", "data": data}}
-    except FileNotFoundError:
-        return None
+# ── CLI ───────────────────────────────────────────────────────────────────────
 
-#Main function to ask the agent a question and get a response
-def ask(user_message, agent):
-    db_module = get_db_module(agent)
-    system = load_system_prompt(agent)
-    db_context = db_module.get_context_block()
-    personal_context = load_personal_context(agent)
-    aux = load_auxiliary_context(agent)
-
-   
-    content = []
-    if aux:
-        content.append(aux)
-    
-    #Context window consists of personal context + database context + user message, separated by --- to help the model understand the structure
-    content.append({"type": "text", "text": f"{personal_context}\n\n{db_context}\n\n---\n\n{user_message}"})
-
-    
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1000,
-        system=system,
-        messages=[
-            {"role": "user", "content": content}
-        ]
-    )
-
-    return response.content[0].text
-
-# command line interface
 @click.group()
 def cli():
-    """Your personal career agent."""
+    """Aryan's personal AI agent."""
     pass
 
-# bot initialisation and commands
+
 @cli.command()
-@click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
+@click.option("--agent", default="career", help="Which agent DB to initialise (career/academia/fitness/finance)")
 def init(agent):
-    """Initialise the database."""
+    """Initialise the database for an agent."""
     db_module = get_db_module(agent)
     db_module.init_db()
-    click.echo("Database initialised for agent: " + agent)
+    click.echo(f"Database initialised for: {agent}")
 
-# No chat history or context query - just a one-off question to the agent, useful for quick queries without needing to start a full conversation
+
 @cli.command()
 @click.argument("message")
-@click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
-def query(message, agent):
-    """Ask the agent anything."""
+def query(message):
+    """Ask the coordinator a one-off question."""
     click.echo("\nThinking...\n")
-    response = ask(message, agent)
+    response = coordinator.ask(message)
     click.echo(response)
 
-# Chat with message histroy as context
+
 @cli.command()
-@click.option("--agent", default="career", help="Which agent to use (career/academia/fitness/finance etc.)")
-def chat(agent):
-    """Start an interactive conversation with the agent."""
-    db_module = get_db_module(agent)
-    system_prompt = load_system_prompt(agent)
-    db_context = db_module.get_context_block()
-    personal_context = load_personal_context(agent)
-    aux = load_auxiliary_context(agent)
-
-    # Build static context once
-    static_context = []
-    if aux:
-        static_context.append(aux)
-
-    static_context.append({
-        "type": "text",
-        "text": (
-            "### PERSONAL CONTEXT\n"
-            f"{personal_context}\n\n"
-            "### DATABASE CONTEXT\n"
-            f"{db_context}\n"
-        )
-    })
-
-    # Conversation history (NO system role here)
-    conversation_history = [
-        {"role": "assistant", "content": static_context}
-    ]
-
-    click.echo(f"\n{agent.capitalize()} Agent ready. Type 'exit' to quit.\n")
+def chat():
+    """Start an interactive conversation with the coordinator."""
+    history = []
+    click.echo("\nCoordinator ready. Type 'exit' to quit.\n")
 
     while True:
         user_input = input("You: ").strip()
@@ -172,35 +84,16 @@ def chat(agent):
         if not user_input:
             continue
 
-        # Add user message
-        conversation_history.append({
-            "role": "user",
-            "content": user_input
-        })
-
-        # Query Claude
-        response = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=1000,
-            system=system_prompt,   # <-- Correct place for system prompt
-            messages=conversation_history
-        )
-
-        reply = response.content[0].text
-
-        # Add assistant reply to history
-        conversation_history.append({
-            "role": "assistant",
-            "content": reply
-        })
-
+        reply, history = coordinator.chat_turn(history, user_input)
         click.echo(f"\nAgent: {reply}\n")
 
-#CLI command groups for different agents
+
+# ── Sub-command groups ────────────────────────────────────────────────────────
+
 cli.add_command(career_cli, name="career")
-#cli.add_command(fitness_cli, name="fitness")
-#cli.add_command(finance_cli, name="finance")
 cli.add_command(academia_cli, name="academia")
+cli.add_command(finance_cli, name="finance")
+# cli.add_command(fitness_cli, name="fitness")
 
 
 if __name__ == "__main__":

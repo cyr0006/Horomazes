@@ -6,39 +6,14 @@ def career_cli():
     """Career agent commands."""
     pass
 
-@career_cli.command()
-@click.argument("description")
-@click.option("--type", default="other", help="achievement/feedback/project/promotion/other")
-@click.option("--impact", default=None)
-def log_event(description, type, impact):
-    """Log a career event."""
-    db_module.log_event(description, type, impact)
-    click.echo(f"Event logged: {description}")
-
-# Log a skill
-@career_cli.command()
-@click.argument("name")
-@click.option("--level", default="intermediate", help="beginner/intermediate/advanced/expert")
-@click.option("--notes", default=None)
-def log_skill(name, level, notes):
-    """Log or update a skill."""
-    db_module.log_skill(name, level, notes=notes)
-    click.echo(f"Skill logged: {name} ({level})")
-
-# Log a goal
-@career_cli.command()
-@click.argument("goal")
-@click.option("--by", default=None, help="Target date e.g. 2025-12-31")
-def log_goal(goal, by):
-    """Log a career goal."""
-    db_module.log_goal(goal, target_date=by)
-    click.echo(f"Goal logged: {goal}")
-
 # Log a job application
 @career_cli.command()
 @click.argument("company")
 @click.argument("role")
-def log_job(company, role):
+@click.option("--date-applied", default=None, help="Date applied (YYYY-MM-DD)")
+@click.option("--status", default="applied", help="Application status")
+@click.option("--notes", default=None, help="Additional notes")
+def log_job(company, role, date_applied=None, status="applied", notes=None):
     """Log a job application."""
-    db_module.log_job(company, role)
+    db_module.log_job(company, role, date_applied=date_applied, status=status, notes=notes)
     click.echo(f"Application logged: {role} at {company}")

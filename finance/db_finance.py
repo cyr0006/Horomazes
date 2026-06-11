@@ -1,8 +1,7 @@
 import sqlite3
 from datetime import datetime
 
-DB_PATH = "finance.db"
-
+DB_PATH = "finance/finance.db"
 # Connect to the database
 def get_conn():
     return sqlite3.connect(DB_PATH)
@@ -12,12 +11,10 @@ def init_db():
     c = conn.cursor()
 
     c.executescript(""" 
-        CREATE TABLE IF NOT EXISTS transactions (
+        CREATE TABLE IF NOT EXISTS MONTHLY_COSTS (
             id INTEGER PRIMARY KEY, 
-            date TEXT NOT NULL,
-            description TEXT NOT NULL,
+            month TEXT NOT NULL,
             amount REAL NOT NULL,
-            category TEXT,
             notes TEXT
         );
     """)
@@ -29,5 +26,15 @@ def get_context_block():
 
     
     return None
+
+def log_monthly_cost(month, amount, notes=None):
+    conn = get_conn()
+    c = conn.cursor()
+    c.execute(
+        "INSERT INTO MONTHLY_COSTS (month, amount, notes) VALUES (?, ?, ?)",
+        (month, amount, notes)
+    )
+    conn.commit()
+    conn.close()
 
 # --- Helpers --- #

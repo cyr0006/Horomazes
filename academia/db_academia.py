@@ -59,3 +59,16 @@ def log_unit(code, name, year, semester, score=None, grade=None, notes=None):
 
     conn.commit()
     conn.close()
+
+def update_unit(code, name, year, semester, score=None, grade=None, notes=None):
+    conn = get_conn()
+    c = conn.cursor()
+
+    c.execute("""
+        UPDATE units
+        SET year=?, semester=?, name=?, score=?, grade=?, notes=?
+        WHERE code=?
+    """, (year, semester, name, score, grade, notes, code))
+
+    conn.commit()
+    conn.close()
