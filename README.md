@@ -1,62 +1,136 @@
-# Aryan's AI Agent
+# Horomazes — Personal AI Agent
 
-# Description
+A command-line AI agent that acts as a personal advisor across career, academia,
+finance, and fitness. It combines structured database records with personal context
+to give specific, data-driven advice rather than generic responses.
 
-An AI agent which is able to advise the user based on their current situtation.
+## How it works
 
-An AI agent is as good as the context it is given, hence this agent uses 4 sources of information for its context window:
+The agent uses a coordinator pattern — a single entry point that sees all your data
+across every domain and reasons across them. Career, academia, and finances are deeply
+interconnected, and the coordinator reflects that.
 
-- prompts/system.md: This tells the LLM who it is and what its job is.
-- prompts/context.md: This tells the AI through prose what the background and story of the user is
-- data/career.db: This keeps a record of the users goals, events, job applications and skills in a structured database
-- The agent also remembers the content of the current converation so each message has the preceding messages as background information
+Each message to the agent is backed by:
 
-NOTE: at this stage each converation is divorced, when you exit the chat nothing is changed in the context window unless specifically done by user.
+- **personal_context.md** — your background, goals, and narrative context
+- **Domain context files** — structural info about each domain (grading scales, career positioning etc.)
+- **SQLite databases** — structured records for jobs, units, and finances
+- **Conversation history** — the current session is remembered turn by turn
 
-# Installation
+## Setup
 
-1. Install requirements.txt
-2. create a .env file and place ANTHROPIC_API_KEY=[your API key]
-3. Open the terminal and write python agent.py init
+1. Install dependencies:
 
-With these 3 steps the setup is complete.
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Usage
+2. Create a `.env` file in the project root:
 
-# Usage
+   ```
+   ANTHROPIC_API_KEY=your_api_key_here
+   ```
+
+3. Initialise the databases:
+
+   ```bash
+   python agent.py init --agent career
+   python agent.py init --agent academia
+   python agent.py init --agent finance
+   ```
+
+4. Seed historical data (optional):
+   ```bash
+   python seed.py
+   ```
 
 ## Talking to the agent
 
-- `python agent.py query "<message>"` — one-off question through the coordinator
-- `python agent.py chat` — interactive conversation with the coordinator (type `exit` to quit)
+```bash
+# One-off question
+python agent.py query "Where do my career and academic situation intersect right now?"
 
-## Database setup
+# Interactive conversation (type 'exit' to quit)
+python agent.py chat
+```
 
-- `python agent.py init --agent career` — initialise the career DB
-- `python agent.py init --agent academia` — initialise the academia DB
-- `python agent.py init --agent finance` — initialise the finance DB
+## Logging data
 
-## Career commands
+### Career
 
-- `python agent.py career log-event "<description>" [--type <type>] [--impact <impact>]`
-- `python agent.py career log-skill "<name>" [--level <level>] [--notes <notes>]`
-- `python agent.py career log-goal "<goal>" [--by <target_date>]`
-- `python agent.py career log-job "<company>" "<role>"`
+```bash
+python agent.py career log-job "Company" "Role Title" --notes "location: Melbourne VIC"
+```
 
-## Academia commands
+### Academia
 
-- `python agent.py academia log-unit <code> "<name>" --year <year> --sem <sem> [--grade <grade>] [--score <score>] [--notes <notes>]`
-- `python agent.py academia update-unit <code> "<name>" --year <year> --sem <sem> [--grade <grade>] [--score <score>] [--notes <notes>]`
+```bash
+# Add a new unit
+python agent.py academia log-unit FIT3077 "SOFTWARE ENGINEERING: ARCHITECTURE AND DESIGN" --year 2026 --sem Sem1 --grade HD --score 85
 
-## Updating context
+# Update an existing unit
+python agent.py academia update-unit FIT3077 "SOFTWARE ENGINEERING: ARCHITECTURE AND DESIGN" --year 2026 --sem Sem1 --grade HD --score 85
+```
 
-The agent's intelligence is only as good as the data it has. Keep these up to date:
+### Finance
 
-- **personal_context.md** — your backstory, values, long-term goals. Edit manually when something significant changes.
-- **academia/context-academia.md** — degree structure and grading scale. Rarely needs editing.
-- **Career DB** — log jobs, skills, events, and goals via CLI as they happen.
-- **Academia DB** — update unit grades at the end of each semester via `update-unit`.
-- **finance/context-finance.md** — update your financial snapshot manually each month until a finance DB is in place.
+```bash
+python agent.py finance log-monthly-cost "2026-04" 2450.52 --notes "vehicle service and roadworthy"
+```
+
+## Keeping context up to date
+
+The agent is only as good as the data it has. General rule: if it has a number
+or a date, it should be a database record. If it's narrative or structural, it
+lives in a markdown file.
+
+| What                       | Where                          | How often          |
+| -------------------------- | ------------------------------ | ------------------ |
+| Goals, backstory, finances | `personal_context.md`          | When things change |
+| Degree structure           | `academia/context-academia.md` | Rarely             |
+| Career positioning         | `career/context-career.md`     | When things change |
+| Finance snapshot           | `finance/context-finance.md`   | Monthly            |
+| Job applications           | Career DB via CLI              | As you apply       |
+| Unit grades                | Academia DB via CLI            | End of semester    |
+| Monthly spend              | Finance DB via CLI             | Monthly            |
+
+## Project structure
+
+```
+agent.py                        ← CLI entry point
+coordinator/
+    coordinator.py              ← context assembly and routing
+    system-coordinator.md       ← coordinator system prompt
+career/
+    career_cli.py               ← career CLI commands
+    db_career.py                ← career database
+    context-career.md           ← career narrative context
+    system-career.md            ← career system prompt
+academia/
+    academia_cli.py             ← academia CLI commands
+    db_academia.py              ← academia database
+    context-academia.md         ← academia narrative context
+    system-academia.md          ← academia system prompt
+finance/
+    finance_cli.py              ← finance CLI commands
+    db_finance.py               ← finance database
+    context-finance.md          ← finance narrative context
+    system-finance.md           ← finance system prompt
+fitness/
+    context-fitness.md          ← fitness narrative context
+    system-fitness.md           ← fitness system prompt
+personal_context.md             ← merged personal context (source of truth)
+seed.py                         ← bulk data seeding scripts
+requirements.txt
+```
+
+## Roadmap - coming soon
+
+- [ ] Persistent conversation history across sessions
+- [ ] Fitness DB and CLI (workouts, metrics)
+- [ ] Transaction-level finance logging
+- [ ] Job status update command (`career update-job`)
+- [ ] Web UI
 
 # Contact
 
