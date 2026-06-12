@@ -23,7 +23,7 @@ In 2023 I began working for Cardinia Shire Council and work there as a customer 
 ## Academic
 
 - I aim to finish my degree as soon as possible
-- I aim to fill out my 70 hours of CPD hours with some meaningful experience (I am actively applying for internships and other positions)
+- I aim to fill out my 70 (the the absolute MINIMUM) hours of CPD hours with some meaningful experience (I am actively applying for internships and other positions)
 
 ## Career
 
