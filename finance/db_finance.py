@@ -36,5 +36,3 @@ def log_monthly_cost(month, amount, notes=None):
     )
     conn.commit()
     conn.close()
-
-# --- Helpers --- #
