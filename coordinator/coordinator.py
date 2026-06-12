@@ -57,6 +57,14 @@ def _finance_context() -> str:
 
 def _fitness_context() -> str:
     # Fitness DB is a stub — nothing to pull yet
+    try:
+        from fitness.db_fitness import get_context_block
+        result = get_context_block()
+        if result:
+            return f"### Fitness Data\n{result}"
+    except Exception:
+        pass
+    # Fitness context lives in the prose file for now (no meaningful DB yet)
     return ""
 
 
@@ -149,7 +157,7 @@ def chat_turn(conversation_history: list, user_message: str) -> tuple[str, list]
     conversation_history.append({"role": "user", "content": content})
 
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-opus-4-8",
         max_tokens=1500,
         system=load_system_prompt(),
         messages=conversation_history
