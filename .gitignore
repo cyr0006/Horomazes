@@ -1,2 +1,10 @@
 # Environment variables
 .env
+
+# System files
+Career/system-career.md
+academia/system-academia.md
+coordinator/system-coordinator.md
+finance/system-finance.md
+fitness/system-fitness.md
+personal_context.md
