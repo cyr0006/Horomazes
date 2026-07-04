@@ -120,6 +120,15 @@ def build_content_blocks(user_message: str) -> list:
     return blocks
 
 
+def _read_text(path: Path) -> str | None:
+    try:
+        if path.exists():
+            return path.read_text(encoding="utf-8")
+    except Exception:
+        pass
+    return None
+
+
 # ── Public interface ──────────────────────────────────────────────────────────
 
 def load_system_prompt() -> str:
