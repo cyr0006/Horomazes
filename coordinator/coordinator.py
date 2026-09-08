@@ -145,7 +145,7 @@ def ask(user_message: str) -> str:
             {"role": "user", "content": build_content_blocks(user_message)}
         ]
     )
-    return response.content[0].text
+    return _extract_text(response)
 
 
 def chat_turn(conversation_history: list, user_message: str) -> tuple[str, list]:
@@ -166,13 +166,23 @@ def chat_turn(conversation_history: list, user_message: str) -> tuple[str, list]
     conversation_history.append({"role": "user", "content": content})
 
     response = client.messages.create(
-        model="claude-sonnet-5",
+        model="claude-opus-5",
         max_tokens=3000,
         system=load_system_prompt(),
         messages=conversation_history
     )
 
-    reply = response.content[0].text
+    reply = _extract_text(response)
     conversation_history.append({"role": "assistant", "content": reply})
 
     return reply, conversation_history
+
+#On Claude 5 models (Sonnet 5, Opus 5, Fable 5.1), extended thinking is on by default when you don't pass a thinking parameter. 
+#That means the response can start with one or more ThinkingBlock objects before the TextBlock so content[0] isn't reliably text anymore. 
+#Fix the assumption in both ask() and chat_turn(): instead of indexing content[0], walk the blocks and pull out the one(s) with type == "text"
+
+def _extract_text(response) -> str:
+    for block in response.content:
+        if block.type == "text":
+            return block.text
+    return ""
