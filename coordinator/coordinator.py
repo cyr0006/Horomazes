@@ -138,8 +138,8 @@ def load_system_prompt() -> str:
 def ask(user_message: str) -> str:
     """Single-turn query through the coordinator."""
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1500,
+        model="claude-sonnet-5",
+        max_tokens=3000,
         system=load_system_prompt(),
         messages=[
             {"role": "user", "content": build_content_blocks(user_message)}
@@ -166,8 +166,8 @@ def chat_turn(conversation_history: list, user_message: str) -> tuple[str, list]
     conversation_history.append({"role": "user", "content": content})
 
     response = client.messages.create(
-        model="claude-opus-4-8",
-        max_tokens=1500,
+        model="claude-sonnet-5",
+        max_tokens=3000,
         system=load_system_prompt(),
         messages=conversation_history
     )
